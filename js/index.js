@@ -31,75 +31,32 @@ const buttonToIngredient = {
 // This function takes care of rendering the pizza based on the state
 // This function is triggered once at the beginning and every time the state is changed
 function renderEverything() {
-  renderPepperoni();
-  renderMushrooms();
-  renderGreenPeppers();
-  renderWhiteSauce();
-  renderGlutenFreeCrust();
-
+  renderIngredients('.pep', 'pepperoni');
+  renderIngredients('.mushroom', 'mushrooms');
+  renderIngredients('.green-pepper', 'greenPeppers');
+  renderToggleIngredients('.sauce', 'sauce-white', 'whiteSauce');
+  renderToggleIngredients('.crust', 'crust-gluten-free', 'glutenFreeCrust');
   renderButtons();
   renderPrice();
 }
 
-
-function renderPepperoni() {
-  document.querySelectorAll('.pep').forEach((onePep) => {
-    if (state.pepperoni) {
-      onePep.style.visibility = 'visible';
-    } else {
-      onePep.style.visibility = 'hidden';
-    }
+function renderIngredients(selector, name){
+  document.querySelectorAll(selector).forEach((ingredient) => {
+    ingredient.style.visibility = state[name] ? 'visible' : 'hidden';
   });
 }
 
-function renderMushrooms() {
-  document.querySelectorAll('.mushroom').forEach((mushroom) => {
-    if (state.mushrooms) {
-      mushroom.style.visibility = 'visible';
-    } else {
-      mushroom.style.visibility = 'hidden';
-    }
-  });
-}
-
-function renderGreenPeppers() {
-  document.querySelectorAll('.green-pepper').forEach((pepper) => {
-    if (state.greenPeppers) {
-      pepper.style.visibility = 'visible';
-    } else {
-      pepper.style.visibility = 'hidden';
-    }
-  });
-}
-
-function renderWhiteSauce() {
-  const sauce = document.querySelector('.sauce');
-  if (state.whiteSauce) {
-    sauce.classList.add('sauce-white');
-  } else {
-    sauce.classList.remove('sauce-white');
-  }
-}
-
-function renderGlutenFreeCrust() {
-  const sauce = document.querySelector('.crust');
-  if (state.glutenFreeCrust) {
-    sauce.classList.add('crust-gluten-free');
-  } else {
-    sauce.classList.remove('crust-gluten-free');
-  }
+function renderToggleIngredients(selector, className, name) {
+  document.querySelector(selector).classList.toggle(className, state[name]);
 }
 
 function renderButtons() {
   document.querySelectorAll('.btn').forEach((button) => {
     const ingredient = buttonToIngredient[button.classList[1]];
-    if (state[ingredient]) {
-      button.classList.add('active');
-    } else {
-      button.classList.remove('active');
-    }
+    button.classList.toggle('active', state[ingredient]);
   });
 }
+
 
 function renderPrice() {
   let totalPrice = basePrice
